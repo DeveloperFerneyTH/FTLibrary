@@ -28,7 +28,7 @@ namespace FT.Library.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            string cnnStr = Configuration.GetConnectionString("LibraryConnection");
+            string cnnStr = Configuration.GetConnectionString("LibraryConnection");            
             services.AddDbContext<LibraryContext>(options => options.UseSqlServer(cnnStr));
         }
 
