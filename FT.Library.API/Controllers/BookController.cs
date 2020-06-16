@@ -30,12 +30,27 @@ namespace FT.Library.API.Controllers
         }
 
         [HttpGet("[action]")]
-        public ActionResult<IEnumerable<Books>> GetBooks()
+        public ActionResult<IEnumerable<BookModel>> GetBooks()
         {
             try
             {
                 log.WriteLog("Book", MethodBase.GetCurrentMethod().Name, new { });
-                var books = repository.GetBooks();
+                List<BookModel> books = (from book in repository.GetBooks()
+                                         join author in repository.GetAuthors()
+                                         on book.Author_ID equals author.ID
+                                         join category in repository.GetCategories()
+                                         on book.Category_ID equals category.ID
+                                         orderby book.Name
+                                         select new BookModel()
+                                         {
+                                             Author_ID = book.Author_ID,
+                                             Author_Name = $"{author.FirstName} {author.LastName}",
+                                             Category_ID = book.Category_ID,
+                                             Category_Name = category.Name,
+                                             ID = book.ID,
+                                             ISBN = book.ISBN,
+                                             Name = book.Name
+                                         }).ToList();
                 return Ok(books);
             }
             catch (Exception ex)
@@ -45,13 +60,29 @@ namespace FT.Library.API.Controllers
         }
 
         [HttpGet("[action]/{id}")]
-        public ActionResult<Books> GetBookByID(int id)
+        public ActionResult<BookModel> GetBookByID(int id)
         {
             try
             {
                 log.WriteLog("Book", MethodBase.GetCurrentMethod().Name, new { ID = id });
-                var Books = repository.GetBookByID(id);
-                return Ok(Books);
+                var bookModel = from book in repository.GetBooks()
+                                   join author in repository.GetAuthors()
+                                   on book.Author_ID equals author.ID
+                                   join category in repository.GetCategories()
+                                   on book.Category_ID equals category.ID
+                                   where book.ID == id
+                                   select new BookModel()
+                                   {
+                                       Author_ID = book.Author_ID,
+                                       Author_Name = $"{author.FirstName} {author.LastName}",
+                                       Category_ID = book.Category_ID,
+                                       Category_Name = category.Name,
+                                       ID = book.ID,
+                                       ISBN = book.ISBN,
+                                       Name = book.Name
+                                   };
+
+                return Ok(bookModel);
             }
             catch (Exception ex)
             {
@@ -60,13 +91,29 @@ namespace FT.Library.API.Controllers
         }
 
         [HttpGet("[action]/{name}")]
-        public ActionResult<Books> GetBookByName(string name)
+        public ActionResult<BookModel> GetBookByName(string name)
         {
             try
             {
                 log.WriteLog("Book", MethodBase.GetCurrentMethod().Name, new { Name = name });
-                var Books = repository.GetBookByName(name);
-                return Ok(Books);
+                var bookModel = from book in repository.GetBooks()
+                                join author in repository.GetAuthors()
+                                on book.Author_ID equals author.ID
+                                join category in repository.GetCategories()
+                                on book.Category_ID equals category.ID
+                                where book.Name.Contains(name)
+                                select new BookModel()
+                                {
+                                    Author_ID = book.Author_ID,
+                                    Author_Name = $"{author.FirstName} {author.LastName}",
+                                    Category_ID = book.Category_ID,
+                                    Category_Name = category.Name,
+                                    ID = book.ID,
+                                    ISBN = book.ISBN,
+                                    Name = book.Name
+                                };
+
+                return Ok(bookModel);
             }
             catch (Exception ex)
             {
@@ -80,8 +127,24 @@ namespace FT.Library.API.Controllers
             try
             {
                 log.WriteLog("Book", MethodBase.GetCurrentMethod().Name, new { AuthorID = authorID });
-                var Books = repository.GetBookByID(authorID);
-                return Ok(Books);
+                var bookModel = from book in repository.GetBooks()
+                                join author in repository.GetAuthors()
+                                on book.Author_ID equals author.ID
+                                join category in repository.GetCategories()
+                                on book.Category_ID equals category.ID
+                                where book.Author_ID == authorID
+                                select new BookModel()
+                                {
+                                    Author_ID = book.Author_ID,
+                                    Author_Name = $"{author.FirstName} {author.LastName}",
+                                    Category_ID = book.Category_ID,
+                                    Category_Name = category.Name,
+                                    ID = book.ID,
+                                    ISBN = book.ISBN,
+                                    Name = book.Name
+                                };
+
+                return Ok(bookModel);
             }
             catch (Exception ex)
             {
@@ -95,8 +158,24 @@ namespace FT.Library.API.Controllers
             try
             {
                 log.WriteLog("Book", MethodBase.GetCurrentMethod().Name, new { CategoryID = categoryID });
-                var Books = repository.GetBookByCategory(categoryID);
-                return Ok(Books);
+                var bookModel = from book in repository.GetBooks()
+                                join author in repository.GetAuthors()
+                                on book.Author_ID equals author.ID
+                                join category in repository.GetCategories()
+                                on book.Category_ID equals category.ID
+                                where book.Category_ID == categoryID
+                                select new BookModel()
+                                {
+                                    Author_ID = book.Author_ID,
+                                    Author_Name = $"{author.FirstName} {author.LastName}",
+                                    Category_ID = book.Category_ID,
+                                    Category_Name = category.Name,
+                                    ID = book.ID,
+                                    ISBN = book.ISBN,
+                                    Name = book.Name
+                                };
+
+                return Ok(bookModel);
             }
             catch (Exception ex)
             {

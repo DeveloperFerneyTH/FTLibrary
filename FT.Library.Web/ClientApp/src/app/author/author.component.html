@@ -1,0 +1,57 @@
+<div>
+  <header>
+    <h1>Autores</h1>
+  </header>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-2 col-md-offset-10">
+        <button class="btn btn-primary" (click)="showInsert()">Agregar nuevo</button>
+      </div>
+    </div>
+    <hr />
+    <div class="row">
+      <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="isShowDetails">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombres</th>
+            <th>Apellidos</th>
+            <th>Fecha de nacimiento</th>
+            <th>Editar</th>
+            <th>Eliminar</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let author of authors">
+            <td>{{ author.id }}</td>
+            <td>{{ author.firstName }}</td>
+            <td>{{ author.lastName }}</td>
+            <td>{{ author.birthDay }}</td>
+            <td><a (click)="editAuthor(author.id)">Editar</a></td>
+            <td><a (click)="deleteAuthor(author.id)">Eliminar</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="row" *ngIf="isShowCreated">
+      <form #frmAdd="ngForm">
+        <div class="row">
+          <div class="col-md-4">
+            <input ([ngModel])="authorInsert.FirtsName" type="text" placeholder="Nombres del autor" class="form-control" required />
+            {{ authorInsert.FirtsName }}
+          </div>
+          <div class="col-md-4">
+            <input ([ngModel])="authorInsert.LastName" name="LastName" type="text" placeholder="Apellidos del autor" class="form-control" required />
+          </div>
+          <div class="col-md-4">
+            <input ([ngModel])="authorInsert.BirthDay" type="date" placeholder="Fecha de naciemiento" class="form-control" required />
+          </div>
+        </div>
+        <br />
+        <div class="row">
+          <button class="btn btn-primary" (click)="createAuthor()">Crear</button>
+        </div>                       
+      </form>      
+    </div>
+  </div>
+</div>

@@ -1,43 +1,23 @@
 import { Component } from '@angular/core';
 import { DataService } from '../data.service';
-import { Books } from '../interfaces';
-import { Authors } from '../interfaces';
 import { Categories } from '../interfaces';
 
 @Component({
-  selector: 'app-book',
-  templateUrl: "./book.component.html",
+  selector: 'app-category',
+  templateUrl: "./category.component.html",
   providers: [DataService]
 })
 
-export class BookComponent {
-  public books: Books[];
-  public authors: Authors[];
+export class CategoryComponent {
   public categories: Categories[];
   public isShowDetails: boolean = true;
   public isShowCreated: boolean = false;
-  public bookInsert: Books;
+  public categoryInsert: Categories;
 
   constructor(private dataService: DataService) { }
 
   ngOnInit() {
-    this.getBooks();
-    this.getAuthors();
     this.getCategories();
-  }
-
-  getBooks() {
-    this.dataService.getAllBooks().subscribe(res => {
-      console.log(res);
-      this.books = res;
-    }, error => console.log(error));
-  }
-
-  getAuthors() {
-    this.dataService.getAllAuthors().subscribe(res => {
-      console.log(res);
-      this.authors = res;
-    }, error => console.log(error));
   }
 
   getCategories() {

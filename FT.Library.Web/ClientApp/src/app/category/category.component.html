@@ -1,0 +1,52 @@
+<div>
+  <header>
+    <h1>Categorias</h1>
+  </header>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-2 col-md-offset-10">
+        <button class="btn btn-primary" (click)="showInsert()">Agregar nuevo</button>
+      </div>
+    </div>
+    <hr />
+    <div class="row">
+      <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="isShowDetails">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Descripcion</th>
+            <th>Editar</th>
+            <th>Eliminar</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let category of categories">
+            <td>{{ category.id }}</td>
+            <td>{{ category.name }}</td>
+            <td>{{ category.description }}</td>
+            <td><a (click)="editAuthor(category.id)">Editar</a></td>
+            <td><a (click)="deleteAuthor(category.id)">Eliminar</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="row" *ngIf="isShowCreated">
+      <form #frmAdd="ngForm">
+        <div class="row">
+          <div class="col-md-6">
+            <input ([ngModel])="categoryInsert.Name" type="text" placeholder="Nombre" class="form-control" required />
+            {{ categoryInsert.Name }}
+          </div>
+          <div class="col-md-6">
+            <input ([ngModel])="bookInsert.Description" name="ISBN" type="text" placeholder="Descripción" class="form-control" required />
+          </div>
+        </div>
+        <br />
+        <div class="row">
+          <button class="btn btn-primary" (click)="createAuthor()">Crear</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,49 +1,30 @@
 import { Component } from '@angular/core';
 import { DataService } from '../data.service';
-import { Books } from '../interfaces';
 import { Authors } from '../interfaces';
-import { Categories } from '../interfaces';
 
 @Component({
-  selector: 'app-book',
-  templateUrl: "./book.component.html",
+  selector: 'app-author',
+  templateUrl: "./author.component.html",
   providers: [DataService]
 })
 
-export class BookComponent {
-  public books: Books[];
+export class AuthorComponent {
   public authors: Authors[];
-  public categories: Categories[];
   public isShowDetails: boolean = true;
   public isShowCreated: boolean = false;
-  public bookInsert: Books;
+  public authorInsert: Authors;
+  private txtFirtsName: string;
 
   constructor(private dataService: DataService) { }
 
   ngOnInit() {
-    this.getBooks();
     this.getAuthors();
-    this.getCategories();
-  }
-
-  getBooks() {
-    this.dataService.getAllBooks().subscribe(res => {
-      console.log(res);
-      this.books = res;
-    }, error => console.log(error));
   }
 
   getAuthors() {
     this.dataService.getAllAuthors().subscribe(res => {
       console.log(res);
       this.authors = res;
-    }, error => console.log(error));
-  }
-
-  getCategories() {
-    this.dataService.getAllCategories().subscribe(res => {
-      console.log(res);
-      this.categories = res;
     }, error => console.log(error));
   }
 
@@ -55,5 +36,19 @@ export class BookComponent {
   hideInsert() {
     this.isShowDetails = true;
     this.isShowCreated = false;
+  }
+
+  createAuthor() {
+    this.dataService.createAuthor(this.authorInsert).subscribe(res => {
+      if (res.ExecuteSuccess) {
+        alert(res.Message);
+        this.hideInsert();
+        this.getAuthors();
+      } else {
+        alert(res.Message);
+      }
+    });
+
+    
   }
 }

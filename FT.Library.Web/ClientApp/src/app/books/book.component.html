@@ -1,5 +1,66 @@
 <div>
   <header>
-    <h2>Libros</h2>
+    <h1>Libros</h1>
   </header>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-2 col-md-offset-10">
+        <button class="btn btn-primary" (click)="showInsert()">Agregar nuevo</button>
+      </div>
+    </div>
+    <hr />
+    <div class="row">
+      <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="isShowDetails">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>ISBN</th>
+            <th>Autor</th>
+            <th>Categoria</th>
+            <th>Editar</th>
+            <th>Eliminar</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let book of books">
+            <td>{{ book.id }}</td>
+            <td>{{ book.name }}</td>
+            <td>{{ book.isbn }}</td>
+            <td>{{ book.author_Name }}</td>
+            <td>{{ book.category_Name }}</td>
+            <td><a (click)="editAuthor(book.id)">Editar</a></td>
+            <td><a (click)="deleteAuthor(book.id)">Eliminar</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="row" *ngIf="isShowCreated">
+      <form #frmAdd="ngForm">
+        <div class="row">
+          <div class="col-md-3">
+            <input ([ngModel])="bookInsert.Name" type="text" placeholder="Nombre" class="form-control" required />
+            {{ bookInsert.Name }}
+          </div>
+          <div class="col-md-3">
+            <input ([ngModel])="bookInsert.ISBN" name="ISBN" type="text" placeholder="ISBN" class="form-control" required />
+          </div>
+          <div class="col-md-3">
+            <select ([ngModel])="bookInsert.Author_ID" class="form-control">
+              <option *ngFor="let author of authors" [value]="author.id">{{author.firstName}} {{author.lastName}}</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <select ([ngModel])="bookInsert.Category_ID" class="form-control">
+              <option *ngFor="let category of categories" [value]="category.id">{{category.name}}</option>
+            </select>
+          </div>
+        </div>
+        <br />
+        <div class="row">
+          <button class="btn btn-primary" (click)="createAuthor()">Crear</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>

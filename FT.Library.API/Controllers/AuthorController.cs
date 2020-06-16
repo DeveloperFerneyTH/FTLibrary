@@ -31,12 +31,20 @@ namespace FT.Library.API.Controllers
         }
 
         [HttpGet("[action]")]
-        public ActionResult<IEnumerable<Authors>> GetAuthors()
+        public ActionResult<IEnumerable<AuthorModel>> GetAuthors()
         {
             try
             {
                 log.WriteLog("Author", MethodBase.GetCurrentMethod().Name, new { });
-                var authors = repository.GetAuthors();
+                List<AuthorModel> authors = (from author in repository.GetAuthors()
+                                             select new AuthorModel
+                                             {
+                                                 BirthDay = author.BirthDay,
+                                                 FirstName = author.FirstName,
+                                                 ID = author.ID,
+                                                 LastName = author.LastName
+                                             }).ToList();
+
                 return Ok(authors);
             }
             catch (Exception ex)
